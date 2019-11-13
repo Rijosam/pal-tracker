@@ -1,34 +1,38 @@
 buildscript {
+    ext {
+        springBootVersion = "2.0.6.RELEASE"
+    }
+
     repositories {
-        jcenter()
-        maven { url("http://platform-acceleration-lab-maven.s3.amazonaws.com") }
+        mavenCentral()
     }
 
     dependencies {
-        classpath("io.pivotal.pal.assignments:assignments-plugin:+")
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+
     }
 }
 
-apply plugin: "java"
-apply plugin: "org.springframework.boot"
-apply plugin: "io.pivotal.pal.assignments.plugin"
 
-
-jar {
-    baseName = "prerequisite"
+plugins {
+    id "java"
 }
 
-assignments {
-    apiUrl = "https://caddy.pal.pivotal.io"
-    emails = [""]
-    cohortIdentifier = ""
-}
+apply plugin: 'org.springframework.boot'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
+
+bootRun.environment([
+        "WELCOME_MESSAGE": "hello",
+])
+
+test.environment([
+        "WELCOME_MESSAGE": "Hello from test",
+])
